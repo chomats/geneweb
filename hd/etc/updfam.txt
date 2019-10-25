@@ -18,12 +18,13 @@
       [*merge::family/families]1 # %evar_i;
     %end;
   </title>
-  %include.css;
-  %base_header;
+  %include;css
+  %include;hed
 </head>
 <body%body_prop; id="family">
 %message_to_wizard;
 <div class="container">
+%( do not use %include;perso_header %)
 %include_perso_header;
 
 %define;nav()
@@ -70,7 +71,7 @@ $(document).ready(function(){
 %define;date(xlab,xvar,xdt)
   %let;day_input;pattern="(?:0?[1-9]|1[0-9]|2[0-9]|3[0-1])" size="1" maxlength="2" %readonly;%in;
   %let;month_input;pattern="(?:0?[1-9]|1[0-2]|VD|BR|FM|NI|PL|VT|GE|FL|PR|ME|TH|FT|JC|vd|br|fm|ni|pl|vt|ge|fl|pr|me|th|ft|jc)" size="1" maxlength="2" %readonly;%in;
-  %let;year_input;pattern="[?><~/]?-?\d*/?" size="4" maxlength="8" %readonly;%in;
+  %let;year_input;pattern="[?><~/+-]?\d*/?" size="4" maxlength="8" %readonly;%in;
   <div class="row">
     <div class="col-sm-1 col-md-2 col-form-label">
       xlab
@@ -234,7 +235,7 @@ $(document).ready(function(){
 %define;small_date(kind,xvar,xx,verbose)
   %let;day_input;pattern="(?:0?[1-9]|1[0-9]|2[0-9]|3[0-1])" size="1" maxlength="2" %readonly;%in;
   %let;month_input;pattern="(?:0?[1-9]|1[0-2]|VD|BR|FM|NI|PL|VT|GE|FL|PR|ME|TH|FT|JC|vd|br|fm|ni|pl|vt|ge|fl|pr|me|th|ft|jc)" size="1" maxlength="2" %readonly;%in;
-  %let;year_input;pattern="[?><~/]?-?\d*/?" size="4" maxlength="8" %readonly;%in;
+  %let;year_input;pattern="[?><~/-+]?\d*/?" size="4" maxlength="8" %readonly;%in;
   <div class="row">
     <span class="col-sm-2 col-form-label">[*kind]</span>
     <div class="col-sm-3 form-inline">
@@ -281,7 +282,7 @@ $(document).ready(function(){
     <label for="paxcnt_fn" class="col-sm-2 col-form-label">[*first name/first names]0 <span class="font-weight-bold text-uppercase">%if;(bvar.multi_parents!="yes")%parent.himher;%nn;
       %else;pxcnt%end;</span></label>
     <div class="col-sm-8">
-      <input class="form-control" type="text" name="paxcnt_fn" value="%xx.first_name;" id="paxcnt_fn" placeholder="[*first name/first names]0">
+      <input class="form-control" type="text" name="paxcnt_fn" value="%xx.first_name;" id="paxcnt_fn" placeholder="[*first name/first names]0" %if;(evar.m="ADD_FAM" and xx.first_name="")autofocus%end;>
     </div>
     <label for="paxcnt_occ" class="col-auto col-form-label sr-only">[*number]</label>
     <div class="col-sm-2">
@@ -497,7 +498,7 @@ $(document).ready(function(){
   <h3 class="card-header pt-1 pb-0 text-center"><label for="xx">[*yy]1</label></h3>
 %end;
 
-<h1 %if;(evar.m="ADD_FAM" or evar.m="ADD_FAM_OK" and evar.ip="")class="mt-5"%end;>%nn;
+<h1 %if;((evar.m="ADD_FAM" or evar.m="ADD_FAM_OK") and evar.ip="")class="mt-5"%end;>%nn;
   %if;(evar_m="ADD_FAM" or evar_m="ADD_FAM_OK")
     [*add::family/families]0
   %elseif;(evar_m = "ADD_PAR")
@@ -572,113 +573,6 @@ $(document).ready(function(){
   <div class="card">
     %apply;card_header("events","event/events")
     <div class="card-body">
-  <div style="display:none;">
-    <p>
-      <label>
-        <input type="radio" name="mrel" value="marr" %if;(mrel = "marr" or mrel = "nsckm") checked%end;%/>[*married]
-      </label>
-      <label>
-        <input type="radio" name="mrel" value="not_marr" %if;(mrel = "not_marr" or mrel = "nsck") checked%end;%/>[*not married]
-      </label>
-      <label>
-        <input type="radio" name="mrel" value="engaged"%if;(mrel = "engaged")checked%end;%/>[*engaged]
-      </label>
-      %( Déplacé dans les fevents
-      <label>
-        <input type="checkbox" name="nsck" value="on "%if;(mrel = "nsck" or mrel = "nsckm") checked%end;%/>[*no sexes check]<br%/>
-      </label>
-      %)
-      <label>
-        <input type="radio" name="mrel" value="no_ment"%if;(mrel = "no_ment")checked%end;%/>[*no mention]
-      </label>
-    </p>
-    <table style="border-width:1;width:700;">
-      <tr>
-        <td><label for="marr_place">[*place]</label></td>
-        <td>
-          <input type="text" name="marr_place" size="40" maxlength="200" value="%marriage_place;" id="marr_place"%/>
-        </td>
-      </tr>
-    </table>
-
-    %apply;date([*date/dates]0, "marr", "marriage")
-    %apply;note("marr", "marriage")
-    %apply;source("marr", "marriage")
-
-    <h4>[*witness/witness/witnesses]2</h4>
-
-    <table style="border-width:1">
-      <tr>
-        <td>
-          <label>[*insert::witness/witness/witnesses]0
-          <input type="checkbox" name="ins_witn0" value="on"%/></label>
-        </td>
-      </tr>
-    </table>
-
-    %foreach;witness;
-      <table style="border-width:1;width:700">
-        <tr>
-          <td><label for="witn%cnt;_fn">[*first name/first names]0</label></td>
-          <td>
-            <input type="text" name="witn%cnt;_fn" size="40" maxlength="200" value="%witness.first_name;" id="witn%cnt;_fn"%/>
-          </td>
-          <td style="text-align:%right;"><label for="witn%cnt;_occ">[*number]</label></td>
-          <td>
-            <input type="text" name="witn%cnt;_occ" size="5" maxlength="8" value="%witness.occ;" id="witn%cnt;_occ"%/>
-          </td>
-          <td>
-            <select name="witn%cnt;_p">
-              <option value="link"%if;(witness.create = "link") selected%end;>[*link]0</option>
-              <option value="create"%if;(witness.create = "create") selected%end;>[*create]0</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label for="witn%cnt;_sn">[*surname/surnames]0</label></td>
-          <td colspan="3">
-            <input type="text" name="witn%cnt;_sn" size="40" maxlength="200" value="%witness.surname;" id="witn%cnt;_sn"%/>
-          </td>
-          <td>
-            <label>
-              <input type="radio" name="witn%cnt;_sex" value="N" %if;(witness.create.sex = "neuter") checked%end;%/>?
-            </label>
-            <label>
-              <input type="radio" name="witn%cnt;_sex" value="M" %if;(witness.create.sex = "male") checked%end;%/>[M/F]0
-            </label>
-            <label>
-              <input type="radio" name="witn%cnt;_sex" value="F" %if;(witness.create.sex = "female") checked%end;%/>[M/F]1
-            </label>
-          </td>
-        </tr>
-      </table>
-      <table style="border-width:1">
-        <tr>
-          <td>
-            <label>
-              [*insert::witness/witness/witnesses]0
-              <input type="checkbox" name="ins_witn%cnt;" value="on"%/>
-            </label>
-          </td>
-        </tr>
-      </table>
-    %end;
-
-    <h4>[*divorce]</h4>
-    <p>
-      <label>
-        <input type="radio" name="div" value="not_divorced" %if;(divorce = "not_divorced") checked%end;%/>[*not divorced]
-      </label>
-      <label>
-        <input type="radio" name="div" value="divorced" %if;(divorce = "divorced") checked%end;%/>[*divorced]
-      </label>
-      <label>
-        <input type="radio" name="div" value="separated" %if;(divorce = "separated") checked%end;%/>[*separated]
-      </label>
-    </p>
-    %apply;date([*date/dates]0, "div", "divorce")
-  </div>
-  
       %if;has_fevents;
         %foreach;fevent;
           %apply;one_fevent(cnt, has_fevents)
@@ -839,20 +733,24 @@ $(document).ready(function(){
   <div class="card">
     %apply;card_header("comments","comment")
     <div class="row ml-3">
-      <div class="d-inline col-9 py-1">%include.toolbar;</div>
+      <div class="d-inline col-9 py-1">
+      %include;toolbar
+      </div>
       <textarea class="col-9 form-control" id="notes_comments" name="comment" rows="16">%comment;</textarea>%sq;
       <button type="submit" class="btn btn-outline-success btn-lg col-4 py-3 mt-2 mb-3 mx-auto order-3" title="[*validate/delete]0" aria-label="[*validate/delete]0">
         <span class="font-weight-bold text-uppercase">[*validate/delete]0</span><i class="fa fa-share fa-rotate-180 fa-fw ml-2" aria-hidden="true"></i>
       </button>
-      <div class="col my-1 mr-2 text-monospace">%include.accent;</div>
+      <div class="col my-1 mr-2 text-monospace">
+      %include;accent
+      </div>
     </div>
   </div>
 </form>
 
-%base_trailer;
-%include.copyr;
+%include;trl
+%include;copyr
 </div>
-%include.js;
+%include;js
 <script>
 <!--
 function changeCalendar(e,v,m,c) {

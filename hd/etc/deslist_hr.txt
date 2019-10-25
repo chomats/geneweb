@@ -16,15 +16,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="%image_prefix;/favicon_gwd.png">
-%include.css;
-%base_header;
+%include;css
+%include;hed
 </head>
 <body%body_prop;>
 %message_to_wizard;
 <div class="container-fluid">
-%import;perso_utils
+%include;perso_utils
 %if;not cancel_links;
-  %import;menubar;
+  %include;menubar
 %end;
 
 <script type="text/javascript">
@@ -58,7 +58,7 @@
 </h1>
 
 %if;not cancel_links;
-  %import;buttons;
+  %include;buttons
 %end;
 %let;birth_symbol;%if;(bvar.birth_symbol != "")%bvar.birth_symbol;%else;&deg;%end;%in;
 %let;death_symbol;%if;(bvar.death_symbol != "")%bvar.death_symbol;%else;&dagger;%end;%in;
@@ -148,7 +148,7 @@
               <a href="#%sss;" %apply;implex1(sss)>%l212;</a>%nn;
             %else;
              %l212;%nn;
-            %end;            
+            %end;
             %l22;%nn;
           %end;
         </tt>
@@ -167,15 +167,15 @@
       %if;(family_cnt > 1)
         %self;%nn;
       %elseif;(not cancel_links)
-        <a id="i_%index;" href="%prefix;&i=%index;">%self;</a>%self.title; %dates;%nn;
+        <a id="i_%index;" href="%prefix;&i=%index;">%self;</a> %dates;%if;(self.title!=""), %self.title;%end;%nn;
       %else;
-        %self; %self.title; %dates;%nn;
+        %self; %dates;%if;(self.title!=""), %self.title;%end;%nn;
       %end;
       %sp;&amp;%if;(on_marriage_date != "")<small>%marriage_date.prec;%marriage_date.year;</small>%end;%sp;
       %if;(not cancel_links)
-        <a id="is_%spouse.index;_%family.index;" href="%prefix;&i=%spouse.index;">%spouse;</a> %spouse.dates;
+        <a id="is_%spouse.index;_%family.index;" href="%prefix;&i=%spouse.index;">%spouse;</a> %spouse.dates;%if;(spouse.title!=""), %spouse.title;%end;%nn;
       %else;
-       %spouse; %spouse.dates;
+       %spouse; %spouse.dates;%if;(spouse.title!=""), %spouse.title;%end;%nn;
       %end;
       %if;(spouse.first_name!="?" and spouse.surname!="?" and not spouse.is_descendant)
         %apply;add_in_sorted_list(spouse.index)
@@ -190,11 +190,11 @@
       %end;
       <br>
       %if;(curlev < maxlev)
-        %reset_count; 
+        %reset_count;
         %foreach;sorted_listb_item;
           %if;(item.1=ifam)%incr_count;%end;
         %end;
-        %reset_count1; 
+        %reset_count1;
         %foreach;sorted_listc_item;
           %if;(item.1=index)%incr_count1;%end;
         %end;
@@ -303,10 +303,10 @@
 %end;
 <p>[*total][:] %apply;desc_count(max_desc_level) [descendants] (%count; [person/persons]1 [with] [spouse/spouses]1)
 
-%import;trl;
-%import;copyr;
+%include;trl
+%include;copyr
 </div>
-%import;js;
+%include;js
 
 </body>
 </html>

@@ -3,15 +3,50 @@
 GeneWeb is an open source genealogy software written in OCaml. It comes
 with a Web interface and can be used off-line or as a Web service.
 
+## Build status
+
+|            | Linux             | macOS             | Windows (mingw64)
+| ---:       | :---:             | :---:             | :---:
+| OCaml 4.05 | [![l405]][travis] | [![m405]][travis] | -
+| OCaml 4.06 | [![l406]][travis] | [![m406]][travis] | -
+| OCaml 4.07 | [![l407]][travis] | [![m407]][travis] | -
+| OCaml 4.08 | [![l408]][travis] | [![m408]][travis] | -
+| OCaml 4.09 | [![l409]][travis] | [![m409]][travis] | [![win-409]][appveyor]
+
+[l405]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/1
+[l406]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/2
+[l407]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/3
+[l408]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/4
+[l409]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/5
+[m405]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/6
+[m406]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/7
+[m407]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/8
+[m408]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/9
+[m409]:https://travis-matrix-badges.herokuapp.com/repos/geneweb/geneweb/branches/master/10
+[win-409]:https://ci.appveyor.com/api/projects/status/5a5yk7jvxk332pxu/branch/master?svg=true
+[travis]:https://travis-ci.org/geneweb/geneweb
+[appveyor]:https://ci.appveyor.com/project/geneweb/geneweb
+
 ## Documentation
 
 The documentation is available online: http://geneweb.tuxfamily.org/
+
+## Installation
+
+Using [opam](https://opam.ocaml.org/):
+
+```
+opam pin add geneweb -k git https://github.com/geneweb/geneweb --no-action
+opam depext geneweb
+opam install geneweb
+```
 
 ## Getting involved
 
 We encourage you to participate in this open source project. We love
 pull requests, bugs reports, ideas...
 
+* Documentation: http://geneweb.tuxfamily.org/wiki/GeneWeb
 * Mailing list: https://groups.yahoo.com/neo/groups/GeneWeb/info
 * IRC: irc://irc.freenode.net/geneweb
 * Git: https://github.com/geneweb/geneweb
@@ -19,107 +54,56 @@ pull requests, bugs reports, ideas...
 * Facebook group: http://www.facebook.com/geneweb
 * Wikipedia: https://en.wikipedia.org/wiki/GeneWeb
 
-## Building the code
+## Contributor guidelines
 
-### Build status
+### Install dependencies
 
-| [Linux/OSX][lin-link] | [Windows][win-link] |
-| :-------------------: | :-----------------: |
-| ![lin-badge]          | ![win-badge]        |
-
-[lin-link]:  https://travis-ci.org/geneweb/geneweb "Travis build status"
-[lin-badge]: https://travis-ci.org/geneweb/geneweb.svg?branch=master "Travis build status"
-[win-link]:  https://ci.appveyor.com/project/ipfix/geneweb "AppVeyor build status"
-[win-badge]: https://ci.appveyor.com/api/projects/status/k7e1c67m4hc22491/branch/master?svg=true "AppVeyor build status"
+```
+$ opam install camlp5 cppo dune markup ounit
+```
 
 ### Build instructions
 
-1. Install OCaml (http://ocaml.org/)
-  1. Install opam (https://opam.ocaml.org/)
-  2. Install camlp5 (with opam)
-  3. (Optional) Install ocamlfind (with opam)
-2. Clone the repository
-```
-git clone https://github.com/geneweb/geneweb
-```
-3. Compil GeneWeb
-```
-./configure
-make opt
-make distrib
-```
+1. Run the configuration script
+   ```
+   $ ./configure
+   ```
+2. Build the distibution
+   ```
+   $ make clean distrib
+   ```
 
 ### Building the API
 
-The API uses the Google Protocol Buffer to exchange informations
+The API uses the Google Protocol Buffer to exchange information
 encoded as pb, json, xml.
 
-It has the following dependancies:
+Install [protoc](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation),
+and these extra dependencies:
 
-- OCaml
-- camlp5
-- lwt
-- ocamlfind
-- ocurl
-- piqi
-- piqilib
-- protobuf
-- re
-- uuidm
-- yojson
-- redis
+```
+$ opam install ocurl piqi piqilib redis redis-sync yojson
+```
 
-## Contributor guidelines
+Then, tell the configure script to enable API.
 
-### Creating a pull request
-
-Use the bug number/title as the name of pull request. Example of
-commit message "PR #XXX: Title of the PR/Bug".
+```
+$ ./configure --api
+```
 
 ### Coding style
 
 * Try to keep the same coding style as the existing one.
 * New code should not contain any trailing whitespace.
-* Each commit should have a single clear purpose. If a commit contains
+* Each pull request should have a single clear purpose. If it containes
   multiple unrelated changes, those changes should be split into
-  separate commits.
-* If a commit requires another commit to build properly, those commits
-  should be squashed.
+  separate pull requests.
 * If the PR needs to be update, push force.
+* When submitting a new feature/function, write documentation and tests if it is relevant.
 
-## CONTENTS
-
-|   File    |                  Description                            |
-| --------- | ------------------------------------------------------- |
-| CHANGES   | changes (for genealogists non programmers)              |
-| ICHANGES  | changes (for programmers)                               |
-| LICENSE   | license notice                                          |
-| configure | configure script                                        |
-| Makefile  | main Makefile                                           |
-| README    | this file                                               |
-| INSTALL   | installation file                                       |
-| contrib   | users contributions                                     |
-| dag2html  | library to create html trees                            |
-| etc       | additional files for distribution                       |
-| ged2gwb   | converter GEDCOM -> GeneWeb                             |
-| gwb2ged   | converter GeneWeb -> GEDCOM                             |
-| gwtp      | CGI to upload and download databases                    |
-| hd        | html and image files for GeneWeb program                |
-| rpm       | files to create Linux rpm packages                      |
-| setup     | service (gwsetup) to launch commands in a Web navigator |
-| src       | sources of main programs                                |
-| tools     | tools for compiling                                     |
-| wserver   | library for creating Web services                       |
-
-## COPYRIGHT
+## Copyright
 
 All files marked in this distribution are Copyright (c) 1998-2016 INRIA
 (Institut National de Recherche en Informatique et Automatique) and
-distributed under the conditions stated in file LICENSE. They can be
-freely redistributed for non-commercial purposes, provided the
-copyright notice remains attached.
-
-## INSTALLATION
-
-You can compile on Unix, Windows or Mac OS X machines.
-See the file INSTALL for installation instructions.
+distributed under the GNU GENERAL PUBLIC LICENSE. See [LICENSE](LICENSE) file
+for details.

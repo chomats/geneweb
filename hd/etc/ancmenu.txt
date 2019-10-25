@@ -16,14 +16,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="%image_prefix;/favicon_gwd.png">
-  %include.favicon;
-  %include.css;
-  %base_header;
+  %include;favicon
+  %include;css
+  %include;hed
 </head>
 <body%body_prop;>
 <div class="container-fluid">
 %message_to_wizard;
-%include.perso_header;
+%include;perso_header
 <script><!--
 
 function long_display_options () {
@@ -132,7 +132,7 @@ function no_options () {
         <input type="radio" name="t" value="N" checked onclick="no_options()"%/> <span class="fa fa-align-left fa-fw"></span> [*short display]*
       </label>
       </div>
-%( Positionne directement l'affiche du numéro sosa en base 10 
+%( Positionne directement l'affiche du numéro sosa en base 10
       <div>
         Sosa base
         <label><input type="radio" class="form-control" name="sosab" value="8"%/>8</label>
@@ -205,9 +205,21 @@ function no_options () {
       </p>
       <p>
         <label>
+          <input type="checkbox" id="t_baptism" name="baptism" value="on"%/>
+          [*date of baptism]
+        </label>
+        <label>
+          <input type="checkbox" id="t_baptism_place" name="baptism_place" value="on"%/>
+          [*baptism place]
+        </label>
+      </p>
+      <p>
+        <label>
           <input type="checkbox" id="t_marr" name="marr" value="on"%/>
           [*spouse/spouses]1
         </label>
+      </p>
+      <p>
         <label>
           <input type="checkbox" id="t_marr_date" name="marr_date" value="on"%/>
           [*date of marriage]
@@ -216,6 +228,8 @@ function no_options () {
           <input type="checkbox" id="t_marr_place" name="marr_place" value="on"%/>
           [*where married]
         </label>
+     </p>
+     <p>
         <label>
           <input type="checkbox" id="t_child" name="child" value="on"%/>
           [*number of children]
@@ -233,8 +247,18 @@ function no_options () {
       </p>
       <p>
         <label>
+          <input type="checkbox" id="t_burial" name="burial" value="on"%/>
+          [*date of burial]
+        </label>
+        <label>
+          <input type="checkbox" id="t_burial_place" name="burial_place" value="on"%/>
+          [*burial place]
+        </label>
+      </p>
+      <p>
+        <label>
           <input type="checkbox" id="t_death_age" name="age" value="on"%/>
-          [*age]/[age at death]
+          [*age]/[*age at death]
         </label>
         <label>
           <input type="checkbox" id="t_occu" name="occu" value="on"%/>
@@ -505,9 +529,9 @@ function no_options () {
   </div>
 </form>
 
-%base_trailer;
-%include.copyr;
+%include;trl
+%include;copyr
 </div>
-%include.js;
+%include;js
 </body>
 </html>

@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="%image_prefix;/favicon_gwd.png">
-%include.css;
+%include;css
 </head>
 <body%body_prop;>
 <div class="container text-center ">
@@ -31,6 +31,7 @@
   <a class="btn btn-outline-secondary" href="%prefix_base;lang=bg%if;(evar.templ!="");templ=%evar.templ;;%end;" title="bg">български</a>
   <a class="btn btn-outline-secondary" href="%prefix_base;lang=br%if;(evar.templ!="");templ=%evar.templ;;%end;" title="br">brezhoneg</a>
   <a class="btn btn-outline-secondary" href="%prefix_base;lang=ca%if;(evar.templ!="");templ=%evar.templ;;%end;" title="ca">català</a>
+  <a class="btn btn-outline-secondary" href="%prefix_base;lang=co%if;(evar.templ!="");templ=%evar.templ;;%end;" title="co">corsu</a>
   <a class="btn btn-outline-secondary" href="%prefix_base;lang=cs%if;(evar.templ!="");templ=%evar.templ;;%end;" title="cs">čeština</a>
   <a class="btn btn-outline-secondary" href="%prefix_base;lang=da%if;(evar.templ!="");templ=%evar.templ;;%end;" title="da">dansk</a>
   <a class="btn btn-outline-secondary" href="%prefix_base;lang=de%if;(evar.templ!="");templ=%evar.templ;;%end;" title="de">Deutsch</a>

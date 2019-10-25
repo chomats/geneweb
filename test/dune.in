@@ -1,0 +1,14 @@
+(library
+ (name dummy_gwdb)
+ (libraries geneweb.def stdlib-shims)
+ (implements geneweb.gwdb.mli)
+ (modules gwdb)
+)
+
+(executable
+  (name test)
+  (libraries %%%SOSA_PKG%%% dummy_gwdb geneweb.wserver geneweb oUnit stdlib-shims)
+  (modules test test_place test_sosa test_utils)
+)
+
+(alias (name runtest) (action (run ./test.exe) ) )
