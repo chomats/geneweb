@@ -21,7 +21,7 @@ cache:
     - $HOME/.opam/
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install protobuf ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install protobuf ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -qq protobuf-compiler ; fi
 
 install:
@@ -31,7 +31,7 @@ install:
 script:
   - set -ex ;
     export OPAMYES=1 ;
-    export DEPS='benchmark camlp5 cppo dune markup ocaml ounit num ocurl piqi piqilib redis redis-sync stdlib-shims yojson zarith' ;
+    export DEPS='benchmark camlp5 cppo dune markup num ocaml ounit ocurl piqi piqilib redis redis-sync stdlib-shims unidecode.0.2.0 yojson zarith' ;
     eval $(opam config env) ;
     opam pin list ;
     opam pin remove markup --no-action ;
@@ -41,7 +41,4 @@ script:
     opam install depext ;
     opam depext $DEPS ;
     opam install $DEPS ;
-    ./configure && make clean test bench distrib clean ;
-    ./configure --sosa-num && make clean test bench distrib clean ;
-    ./configure --sosa-zarith && make clean test bench distrib clean ;
-    ./configure --api && make clean test bench distrib clean ;
+    make ci ;
